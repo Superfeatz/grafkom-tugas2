@@ -5,9 +5,11 @@ export async function loadTextures(THREE){
   const loader = new THREE.TextureLoader();
 
   // Matcap metal (boleh dipakai untuk efek “chrome” ringan)
-  const matcap = loader.load(
-    "https://cdn.jsdelivr.net/gh/emmelleppi/matcaps/1024/3F3F3F_BFBFBF_9F9F9F_7F7F7F.png"
-  );
+  // const matcap = loader.load(
+  //   // "https://cdn.jsdelivr.net/gh/emmelleppi/matcaps/1024/3F3F3F_BFBFBF_9F9F9F_7F7F7F.png"
+  //   "https://github.com/emmelleppi/matcaps/tree/master/1024/3F3F3F_BFBFBF_9F9F9F_7F7F7F.png"
+  // );
+  const matcap = loader.load("./textures/matcap.png");
 
   // Tekstur dummy untuk ember / debug UV
   const plasticDiffuse = loader.load(
@@ -15,9 +17,10 @@ export async function loadTextures(THREE){
   );
 
   // Sprite partikel air
-  const waterSprite = loader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/water.png"
-  );
+  // const waterSprite = loader.load(
+  //   "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/water.png"
+  // );
+  const waterSprite = loader.load("./textures/clear_droplet.png");
   waterSprite.wrapS = waterSprite.wrapT = THREE.ClampToEdgeWrapping;
   waterSprite.flipY = false;
 
@@ -33,7 +36,7 @@ export function makeTiledWallTexture(
     rows  = 12,
     cols  = 10,
     grout = "#bfb6ad",            // warna nat
-    tile  = "#d9cfc7"             // warna ubin
+    tile  = "#974807ff"             // warna ubin
   } = {}
 ){
   const pxW = 1024, pxH = 1024;

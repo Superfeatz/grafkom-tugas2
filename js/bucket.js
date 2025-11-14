@@ -15,7 +15,7 @@ export function createBucket(THREE) {
 
   // Material
   const plasticOuter = new THREE.MeshPhysicalMaterial({
-    color: 0x2e66cc, roughness: 0.35, metalness: 0.0,
+    color: "#29020B", roughness: 0.6, metalness: 0.0,
     clearcoat: 0.35, clearcoatRoughness: 0.5, envMapIntensity: 1.1
   });
   const plasticInner = new THREE.MeshPhysicalMaterial({

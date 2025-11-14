@@ -24,7 +24,7 @@ export class WaterEmitter {
     this.bucketH   = bucket?.height ?? 0.30;
     this.bucketFill = 0;                      // tinggi air (m), dari dasar ember
     this.bucketMaxFill = this.bucketH;        // 100% (tepat bibir)
-    this.waterPerParticle = 0.000025;         // volume per partikel (m^3) → atur kecepatan penuh
+    this.waterPerParticle = 0.0002;         // volume per partikel (m^3) → atur kecepatan penuh
 
     // ---------- Particles pool
     const positions = new Float32Array(count * 3);
@@ -99,7 +99,7 @@ export class WaterEmitter {
       });
       this.puddle = new THREE.Mesh(puddleGeo, puddleMat);
       this.puddle.rotation.x = -Math.PI / 2;
-      this.puddle.position.y = this.floorY + 0.001;
+      this.puddle.position.y = this.floorY + 0.0005; // sedikit di atas lantai
       this.puddle.scale.setScalar(0.001); // mulai kecil sekali
       this.scene.add(this.puddle);
     }
@@ -136,7 +136,7 @@ export class WaterEmitter {
     this.pool.velocities[i*3+2] = dir.z * s;
 
     this.pool.ages[i] = 0;
-    this.pool.life[i] = 3.0;
+    this.pool.life[i] = 20.0;
   }
 
   // Naikkan permukaan air (dan trigger overflow)
