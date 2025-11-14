@@ -2,20 +2,45 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <title>Keran Air 3D — Tekstur • Lighting • Hirarki • Ember</title>
+  <title>Keran Air 3D — Demo & Perbandingan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   <style>
-    html, body { margin:0; height:100%; background:#0d1117; color:#e6edf3; font-family:system-ui, Segoe UI, Roboto, Arial,sans-serif; }
-    #app { height:100%; display:grid; grid-template-rows:auto 1fr; }
-    header { padding:10px 16px; display:flex; gap:16px; align-items:center; border-bottom:1px solid #24292f; }
-    header .note { font-size:12px; opacity:.8; margin-left:auto }
-    #canvas-container { position:relative; width:100%; height:calc(100vh - 52px); }
-    #gui { position:absolute; top:10px; right:10px; z-index:10; }
+    :root { --bg:#000000; --fg:#000000; --muted:#486b92; --card:#ffffff; --line:#30363d; }
+    html,body { margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif; }
+    header { padding:14px 18px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    header h1 { font-size:18px; margin:0; }
+    .group { margin-left:auto; font-weight:600; }
+    .wrap { padding:16px; display:grid; gap:16px; }
+    /* area perbandingan: foto | video | kanvas */
+    .compare {
+      display:grid; gap:16px;
+      grid-template-columns: 1fr 1fr;      /* desktop: 2 kolom */
+    }
+    .panel { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+    .panel header { border:0; padding:10px 12px; background:transparent; }
+    .panel .body { padding:12px; }
+    .media { width:100%; display:block; background:#ffffff; object-fit:cover; aspect-ratio:16/9; }
+    /* kanvas berdampingan dengan media */
+    #canvas-card { grid-column: span 2; }
+    @media (min-width: 1100px){
+      .compare { grid-template-columns: 1fr 1fr 1fr; }
+      #canvas-card { grid-column:auto; }
+    }
+    /* tree hubungan objek */
+    .tree { padding:16px 20px; }
+    .tree ul { list-style:none; padding-left:1.2rem; position:relative; }
+    .tree ul::before { content:""; position:absolute; left:0.45rem; top:0; bottom:0; width:2px; background:var(--line); }
+    .tree li { margin:6px 0; position:relative; }
+    .tree li::before { content:""; position:absolute; left:-0.75rem; top:0.7em; width:0.9rem; height:2px; background:var(--line); }
+    .pill { display:inline-block; padding:4px 8px; border:1px solid var(--line); border-radius:999px; background:#11161d; font-size:13px }
+    /* kanvas & status */
+    #canvas-container { position:relative; width:100%; height:520px; }
+    #status { position:absolute; top:8px; left:8px; font-size:12px; color:var(--muted); background:rgba(0,0,0,.35); padding:4px 8px; border-radius:8px; border:1px solid var(--line); }
     a { color:#58a6ff; text-decoration:none; }
   </style>
 
-  <!-- Import map agar bisa `import "three"` -->
+  <!-- Import map Three.js -->
   <script type="importmap">
   {
     "imports": {
@@ -26,111 +51,184 @@
   </script>
 </head>
 <body>
-  <div id="app">
-    <header>
-      <strong>Keran Air 3D</strong>
-      <span>Tekstur • Lighting • Hirarki • Ember</span>
-      <span class="note">Drag di kanvas / pakai slider untuk ubah debit</span>
-    </header>
-    <div id="canvas-container"><div id="gui"></div></div>
-  </div>
+  <header>
+    <h1>Animasi Keran Air 3D — Texture • Lighting • Hierarchy</h1>
+    <div class="group">Nama Kelompok: <span id="nama-kelompok">Muhammad Hafidz Harridil Mahali, Ananda Faris Ghazi Ramadhan</span></div>
+    <div class="group">NRP: <span id="NRP">5025221030, 5025231280</span></div>
+  </header>
 
-  <!-- Entry module -->
+<main class="wrap">
+  <!-- 3 card di atas: Foto, Video, Tree -->
+  <section class="compare">
+    <!-- (c) Foto objek asli -->
+    <article class="panel" id="foto-card">
+      <header><strong>Foto Objek Asli</strong></header>
+      <div class="body">
+        <img class="media" src="foto-asli.jpg" alt="Foto objek asli (ganti file ini)" loading="lazy" />
+        <p style="margin:.5rem 0 0;color:var(--muted);font-size:13px">
+          Ganti <code>foto-asli.jpg</code> dengan foto keran & ember asli kalian.
+        </p>
+      </div>
+    </article>
+
+    <!-- (d) Video objek asli -->
+    <article class="panel" id="video-card">
+      <header><strong>Video Objek Asli</strong></header>
+      <div class="body">
+        <video class="media" controls src="video-asli.mp4" preload="metadata"></video>
+        <p style="margin:.5rem 0 0;color:var(--muted);font-size:13px">
+          Ganti <code>video-asli.mp4</code> dengan video demonstrasi objek.
+        </p>
+      </div>
+    </article>
+
+    <!-- (e) Tree hubungan objek sekarang jadi card ke-3 di atas -->
+    <article class="panel" id="tree-card">
+      <header><strong>Desain Tree Hubungan Antar Objek</strong></header>
+      <div class="body" style="padding:0">
+        <figure style="margin:0">
+          <picture>
+            <source srcset="hierarchy.svg" type="image/svg+xml" />
+            <img src="hierarchy.png"
+                 alt="Tree hubungan antar objek (hasil render PlantUML)"
+                 style="width:100%;display:block"
+                 loading="lazy" />
+          </picture>
+          <figcaption style="padding:10px 12px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)">
+          </figcaption>
+        </figure>
+      </div>
+    </article>
+  </section>
+
+  <!-- (f) Canvas 3D sekarang di bawah, full-width -->
+<article class="panel" id="canvas-card">
+  <header><strong>Aplikasi 3D (Canvas)</strong></header>
+  <div class="body">
+    <div id="canvas-container">
+      <div id="status">Menyiapkan scene…</div>
+    </div>
+
+    <!-- GUI untuk kontrol manual (slider/tombol) -->
+    <div id="gui" style="margin-top:8px;"></div>
+
+    <p style="margin:.5rem 0 0;color:var(--muted);font-size:13px">
+      Gerakkan kamera dengan mouse. Putar keran secara manual melalui kontrol pada scene/GUI untuk
+      mengatur aliran air ke ember.
+    </p>
+  </div>
+</article>
+
+</main>
+
+
+
+  <!-- Entry module: tetap memakai modul yang sudah ada -->
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-    // Modul lokal
+    // Modul lokal (pastikan file-file berada di folder ./js sesuai struktur proyek)
     import { createScene } from "./js/utils.js";
     import { setupLighting } from "./js/lighting.js";
     import { loadTextures, makeTiledWallTexture } from "./js/textures.js";
     import { createFaucet } from "./js/faucet.js";
     import { createBucket } from "./js/bucket.js";
-    import { setupHierarchy } from "./js/hierarchy.js";
     import { WaterEmitter } from "./js/water.js";
+    //import { setupAutoAnimation } from "./js/autoAnimation.js";
+    import { createFloor } from "./js/floor.js";
+    import { setupHierarchy } from "./js/hierarchy.js";
 
-    // --- Bootstrap ---
     const container = document.getElementById("canvas-container");
+    const statusEl  = document.getElementById("status");
+
+    // --- Bootstrap scene
     const { renderer, scene, camera } = createScene(container, THREE, OrbitControls);
 
-    // Environment untuk refleksi metal
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.15;
 
-    // Lighting
     setupLighting(scene, THREE, renderer);
+    await loadTextures(THREE);
 
-    // Tekstur preset (sprite air, dll) — opsional
-    const tex = await loadTextures(THREE);
-
-    // DINDING ubin
+    // Dinding ubin belakang keran
+    // {
+    //   const wallTex = makeTiledWallTexture(THREE, { rows: 10, cols: 8, grout: "#94a3b8", tile: "#bbf7d0" });
+    //   const wall = new THREE.Mesh(
+    //     new THREE.PlaneGeometry(6, 3),
+    //     new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.95, metalness: 0.0 })
+    //   );
+    //   wall.position.set(-0.03, 1.15, 0);
+    //   wall.rotation.y = Math.PI / 2;
+    //   wall.receiveShadow = true;
+    //   scene.add(wall);
+    // }
     {
-      const wallTex = makeTiledWallTexture(THREE, { rows: 10, cols: 8, grout: "#bfb6ad", tile: "#d9cfc7" });
       const wall = new THREE.Mesh(
         new THREE.PlaneGeometry(6, 3),
-        new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.95, metalness: 0.0 })
+        new THREE.MeshStandardMaterial({
+          color: 0xb7c5c0,
+          // color: "#38F603",     
+          roughness: 0.95,
+          metalness: 0.0
+        })
       );
-      wall.position.set(-0.03, 1.15, 0);  // sangat dekat di belakang flange
-      wall.rotation.y = Math.PI / 2;      // menghadap +X
+      wall.position.set(-0.03, 1.15, 0);
+      wall.rotation.y = Math.PI / 2;
       wall.receiveShadow = true;
       scene.add(wall);
     }
 
-    // Objek: KERAN & EMBER
-    const faucet = createFaucet(THREE);   // faucet.js sudah atur koordinat internal (yAxis)
-    faucet.root.position.set(0, 0, 0);    // jangan diberi offset lagi
+    // Lantai
+    const floor = createFloor(THREE, {
+        size: 6,
+        tileSize: 0.3,
+        groutColor: "#a8a29e",
+        tileColor: "#d4d4d4"
+    });
+    scene.add(floor);
+
+    // Objek utama: keran & ember
+    const faucet = createFaucet(THREE);
     scene.add(faucet.root);
 
     const bucket = createBucket(THREE);
-    bucket.root.position.set(0.25, 0.22, -0.0); // dasar tepat di lantai
+    bucket.root.position.set(0.25, 0.22, -0.0);
     scene.add(bucket.root);
 
-    // Air (partikel)
+    // Emitter air + permukaan ember
     const water = new WaterEmitter(THREE, {
-        scene,
-        count: 3000,
-        originObject: faucet.spoutTip,
-        gravity: new THREE.Vector3(0, -9.8, 0),
-        bucket: { object: bucket.root, radius: bucket.innerRadius, height: bucket.height }, // ← bisa dihapus jika tanpa ember
-        floorY: 0,
-        shadow: true
+      scene,
+      count: 1200,
+      originObject: faucet.spoutTip,
+      gravity: new THREE.Vector3(0, -9.8, 0),
+      bucket: { object: bucket.root, radius: bucket.innerRadius, height: bucket.height },
+      floorY: 0,
+      shadow: true
     });
 
     // Hirarki & interaksi (tuas → debit)
     const api = setupHierarchy(THREE, faucet, water, renderer.domElement, document.getElementById("gui"));
+    // Auto animasi (fill → overflow → reset)
+    //const auto = setupAutoAnimation(THREE, faucet, water, () => { /* selesai 1 siklus */ });
 
-    // Lantai & grid
-    {
-      const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(6, 6),
-        new THREE.MeshStandardMaterial({ color: 0x222428, metalness: 0.0, roughness: 1.0 })
-      );
-      plane.rotation.x = -Math.PI / 2;
-      plane.receiveShadow = true;
-      scene.add(plane);
-
-      const grid = new THREE.GridHelper(6, 24, 0x555555, 0x333333);
-      grid.position.y = 0.001;
-      scene.add(grid);
-    }
-
-    // Loop render
+    // Render loop
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       const dt = Math.min(0.033, clock.getDelta());
       water.update(dt);
       api.update(dt);
+      //auto.update(dt);
       renderer.render(scene, camera);
     });
 
     // Responsif
-    window.addEventListener("resize", () => {
+    addEventListener("resize", () => {
       const w = container.clientWidth, h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+      camera.aspect = w/h; camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     });
   </script>
