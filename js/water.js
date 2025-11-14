@@ -40,7 +40,7 @@ export class WaterEmitter {
       geo,
       new THREE.PointsMaterial({
         size: 0.025,
-        map: new THREE.TextureLoader().load("../clear_droplet.png"),
+        map: new THREE.TextureLoader().load("./textures/clear_droplet.png"),
         color: 0x88ccff,
         transparent: true,
         opacity: 0.85,
@@ -302,3 +302,4 @@ export class WaterEmitter {
     this.points.geometry.attributes.position.needsUpdate = true;
   }
 }
+
